@@ -32,13 +32,13 @@ public class Main {
 		System.out.printf("Número a buscar: %d\n", find);
 		
 		try {
-			List<Coordinates> allCoordinates = fixedThreadPool.invokeAny(allFinders);
-			if(find>max) {
-				System.out.println("No se ha encontrado");
+			fixedThreadPool.invokeAny(allFinders);
+			if(find > max) {
+				System.out.println("No se encontro el numero");
 			}
 		} catch (InterruptedException e) {
-			e.printStackTrace();
 		} catch (ExecutionException e) {
+			System.out.println("No se encontro el numero");
 		} finally {
 			fixedThreadPool.shutdown();
 		}

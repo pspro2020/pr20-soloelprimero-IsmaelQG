@@ -1,12 +1,11 @@
 package code;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 
-public class FinderTask implements Callable<List<Coordinates>>{
+public class FinderTask implements Callable<Coordinates>{
 	
 	private List<Integer> fila;
 	private int num;
@@ -19,28 +18,18 @@ public class FinderTask implements Callable<List<Coordinates>>{
 	}
 
 	@Override
-	public List<Coordinates> call() throws Exception {
-		return find();
-	}
-	
-	private List<Coordinates> find(){
-		List<Coordinates> coordinates = new ArrayList<Coordinates>();
+	public Coordinates call() throws InterruptedException {
 		int y = 0;
 		for(int i : fila) {
 			if(i == num) {
-				try {
-					TimeUnit.MILLISECONDS.sleep(ThreadLocalRandom.current().nextInt(500, 1001));
-					Coordinates c = new Coordinates(y, x);
-					coordinates.add(c);
-					System.out.print(c.toString());
-				} catch (InterruptedException e) {
-					System.out.printf("Row %d in collumn %d interrupted while sleeping\n", x, y);
-				}
+				Coordinates coordinates = new Coordinates(y, x);
+				System.out.print(coordinates.toString());
+				return coordinates;
 			}
+			TimeUnit.MILLISECONDS.sleep(ThreadLocalRandom.current().nextInt(500, 1001));
 			y++;
 		}
-		return coordinates;
-		
+		throw new InterruptedException();
 	}
 
 }
